@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap');
 
 @tailwind base;
@@ -113,7 +112,15 @@
   }
 
   .confetti {
-    @apply fixed pointer-events-none w-4 h-4 animate-confetti-fall;
+    @apply fixed pointer-events-none animate-confetti-fall;
+  }
+
+  .gallery-item {
+    @apply relative overflow-hidden rounded-xl shadow-md transition-all duration-300 hover:shadow-lg;
+  }
+
+  .gallery-item:hover img {
+    @apply scale-105;
   }
 }
 
@@ -161,4 +168,24 @@
 .blur-backdrop {
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-100vh) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+@keyframes confetti-sway {
+  0% {
+    transform: translateX(-5px) rotate(0deg);
+  }
+  100% {
+    transform: translateX(5px) rotate(10deg);
+  }
 }

@@ -5,12 +5,26 @@ import { Music, Volume2, VolumeX } from 'lucide-react';
 interface MusicPlayerProps {
   audioSrc: string;
   autoPlay?: boolean;
+  isVideoPaused?: boolean;
 }
 
-const MusicPlayer = ({ audioSrc, autoPlay = true }: MusicPlayerProps) => {
+const MusicPlayer = ({ audioSrc, autoPlay = true, isVideoPaused = true }: MusicPlayerProps) => {
   const [isPlaying, setIsPlaying] = useState(autoPlay);
   const [isMuted, setIsMuted] = useState(false);
+  const [wasPlayingBeforeVideo, setWasPlayingBeforeVideo] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  // Handle video interactions
+  useEffect(() => {
+    if (!isVideoPaused) {
+      // Video is playing, save current music state and pause music
+      setWasPlayingBeforeVideo(isPlaying);
+      setIsPlaying(false);
+    } else if (wasPlayingBeforeVideo) {
+      // Video stopped, don't auto-resume music, let user click play manually
+      setWasPlayingBeforeVideo(false);
+    }
+  }, [isVideoPaused, isPlaying, wasPlayingBeforeVideo]);
 
   useEffect(() => {
     if (audioRef.current) {

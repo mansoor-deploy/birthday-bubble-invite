@@ -5,10 +5,12 @@ import EventDetails from '@/components/EventDetails';
 import MusicPlayer from '@/components/MusicPlayer';
 import VideoInvite from '@/components/VideoInvite';
 import Calendar from '@/components/Calendar';
-import { Cake, Heart, Gift, Sparkles } from 'lucide-react';
+import PhotoGallery from '@/components/PhotoGallery';
+import { Cake, Heart, Gift, Sparkles, Camera } from 'lucide-react';
 
 const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   
   // Set event details
   const childName = "Emma Rose";
@@ -24,6 +26,65 @@ const Index = () => {
   const audioSrc = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
   const videoSrc = "https://assets.mixkit.co/videos/preview/mixkit-multiracial-people-celebrating-a-birthday-with-a-cake-42709-large.mp4";
 
+  // Gallery photos
+  const photoCategories = ["Moments", "Milestones", "Family"];
+  const galleryPhotos = [
+    {
+      id: 1,
+      src: "https://images.unsplash.com/photo-1544126592-55b11182768d?q=80&w=600&auto=format&fit=crop",
+      alt: "First Smile",
+      category: "Moments"
+    },
+    {
+      id: 2,
+      src: "https://images.unsplash.com/photo-1544126592-55b11182768d?q=80&w=600&auto=format&fit=crop",
+      alt: "Bath Time Fun",
+      category: "Moments"
+    },
+    {
+      id: 3,
+      src: "https://images.unsplash.com/photo-1544126592-55b11182768d?q=80&w=600&auto=format&fit=crop",
+      alt: "Playtime",
+      category: "Moments"
+    },
+    {
+      id: 4,
+      src: "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?q=80&w=600&auto=format&fit=crop",
+      alt: "First Steps",
+      category: "Milestones"
+    },
+    {
+      id: 5,
+      src: "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?q=80&w=600&auto=format&fit=crop",
+      alt: "First Birthday Cake",
+      category: "Milestones"
+    },
+    {
+      id: 6,
+      src: "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?q=80&w=600&auto=format&fit=crop",
+      alt: "First Word",
+      category: "Milestones"
+    },
+    {
+      id: 7,
+      src: "https://images.unsplash.com/photo-1581952976147-5a2d15560349?q=80&w=600&auto=format&fit=crop",
+      alt: "With Grandparents",
+      category: "Family"
+    },
+    {
+      id: 8,
+      src: "https://images.unsplash.com/photo-1581952976147-5a2d15560349?q=80&w=600&auto=format&fit=crop",
+      alt: "Family Picnic",
+      category: "Family"
+    },
+    {
+      id: 9,
+      src: "https://images.unsplash.com/photo-1581952976147-5a2d15560349?q=80&w=600&auto=format&fit=crop",
+      alt: "Cousins Fun",
+      category: "Family"
+    }
+  ];
+
   useEffect(() => {
     // Simulate loading assets
     const timer = setTimeout(() => {
@@ -32,6 +93,14 @@ const Index = () => {
     
     return () => clearTimeout(timer);
   }, []);
+
+  const handleVideoOpen = () => {
+    setIsVideoPlaying(true);
+  };
+
+  const handleVideoClose = () => {
+    setIsVideoPlaying(false);
+  };
 
   if (isLoading) {
     return (
@@ -55,10 +124,14 @@ const Index = () => {
       </div>
       
       {/* Music player */}
-      <MusicPlayer audioSrc={audioSrc} autoPlay={true} />
+      <MusicPlayer audioSrc={audioSrc} autoPlay={true} isVideoPaused={!isVideoPlaying} />
       
       {/* Video invite bubble */}
-      <VideoInvite videoSrc={videoSrc} />
+      <VideoInvite 
+        videoSrc={videoSrc} 
+        onVideoOpen={handleVideoOpen}
+        onVideoClose={handleVideoClose}
+      />
       
       <div className="max-w-7xl mx-auto px-4 py-16 space-y-24 overflow-hidden">
         {/* Hero section */}
@@ -126,6 +199,23 @@ const Index = () => {
                 description="Capture memories with our adorable themed photo booth."
               />
             </div>
+          </div>
+        </div>
+        
+        {/* Divider with icon */}
+        <div className="flex items-center justify-center">
+          <div className="h-px bg-gray-200 w-20 md:w-40"></div>
+          <Camera className="mx-4 text-birthday-blue w-8 h-8" />
+          <div className="h-px bg-gray-200 w-20 md:w-40"></div>
+        </div>
+        
+        {/* Photo Gallery */}
+        <div className="max-w-6xl mx-auto">
+          <div className="invitation-card">
+            <PhotoGallery 
+              photos={galleryPhotos}
+              categories={photoCategories}
+            />
           </div>
         </div>
         

@@ -130,6 +130,10 @@ export default {
 				'confetti-fall': {
 					'0%': { transform: 'translateY(-100vh) rotate(0deg)', opacity: '1' },
 					'100%': { transform: 'translateY(100vh) rotate(720deg)', opacity: '0' }
+				},
+				'confetti-sway': {
+					'0%': { transform: 'translateX(-5px)' },
+					'100%': { transform: 'translateX(5px)' }
 				}
 			},
 			animation: {
@@ -142,7 +146,8 @@ export default {
 				'scale-in': 'scale-in 0.4s ease-out',
 				'fade-in': 'fade-in 0.5s ease-out',
 				'fade-in-up': 'fade-in-up 0.6s ease-out',
-				'confetti-fall': 'confetti-fall 5s linear forwards'
+				'confetti-fall': 'confetti-fall 5s linear forwards',
+				'confetti-sway': 'confetti-sway 3s ease-in-out infinite alternate'
 			},
 			backgroundImage: {
 				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

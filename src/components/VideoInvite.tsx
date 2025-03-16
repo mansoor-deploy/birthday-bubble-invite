@@ -4,9 +4,11 @@ import { Video, X } from 'lucide-react';
 
 interface VideoInviteProps {
   videoSrc: string;
+  onVideoOpen?: () => void;
+  onVideoClose?: () => void;
 }
 
-const VideoInvite = ({ videoSrc }: VideoInviteProps) => {
+const VideoInvite = ({ videoSrc, onVideoOpen, onVideoClose }: VideoInviteProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isHalfVisible, setIsHalfVisible] = useState(false);
@@ -47,10 +49,18 @@ const VideoInvite = ({ videoSrc }: VideoInviteProps) => {
       }
       // After the video is opened, make the bubble half visible
       setIsHalfVisible(true);
-    } else if (videoRef.current) {
-      videoRef.current.pause();
+      
+      // Notify parent that video is open
+      if (onVideoOpen) onVideoOpen();
+    } else {
+      if (videoRef.current) {
+        videoRef.current.pause();
+      }
+      
+      // Notify parent that video is closed
+      if (onVideoClose) onVideoClose();
     }
-  }, [isOpen]);
+  }, [isOpen, onVideoOpen, onVideoClose]);
 
   const toggleVideo = () => {
     setIsOpen(!isOpen);
