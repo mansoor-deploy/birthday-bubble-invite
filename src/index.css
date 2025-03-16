@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap');
 
 @tailwind base;
@@ -115,6 +116,9 @@
     @apply fixed pointer-events-none;
     position: absolute;
     will-change: transform;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    perspective: 1000px;
   }
 
   .gallery-item {
@@ -177,17 +181,23 @@
     transform: translateY(-100vh) rotate(0deg);
     opacity: 1;
   }
+  90% {
+    opacity: 0.7;
+  }
   100% {
     transform: translateY(100vh) rotate(720deg);
-    opacity: 0.2;
+    opacity: 0;
   }
 }
 
 @keyframes confetti-sway {
   0% {
-    transform: translateX(-15px) rotate(0deg);
+    transform: translateX(calc(-1 * var(--sway-amount, 15px)));
+  }
+  50% {
+    transform: translateX(0) rotate(5deg);
   }
   100% {
-    transform: translateX(15px) rotate(10deg);
+    transform: translateX(var(--sway-amount, 15px)) rotate(10deg);
   }
 }
