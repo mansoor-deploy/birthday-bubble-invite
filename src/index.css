@@ -112,7 +112,9 @@
   }
 
   .confetti {
-    @apply fixed pointer-events-none animate-confetti-fall;
+    @apply fixed pointer-events-none;
+    position: absolute;
+    will-change: transform;
   }
 
   .gallery-item {
@@ -177,15 +179,15 @@
   }
   100% {
     transform: translateY(100vh) rotate(720deg);
-    opacity: 0;
+    opacity: 0.2;
   }
 }
 
 @keyframes confetti-sway {
   0% {
-    transform: translateX(-5px) rotate(0deg);
+    transform: translateX(-15px) rotate(0deg);
   }
   100% {
-    transform: translateX(5px) rotate(10deg);
+    transform: translateX(15px) rotate(10deg);
   }
 }

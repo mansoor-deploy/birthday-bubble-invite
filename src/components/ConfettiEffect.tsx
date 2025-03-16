@@ -1,12 +1,12 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 interface ConfettiProps {
   active: boolean;
   count?: number;
 }
 
-const ConfettiEffect = ({ active, count = 100 }: ConfettiProps) => {
+const ConfettiEffect = ({ active, count = 200 }: ConfettiProps) => {
   const [confetti, setConfetti] = useState<Array<{ 
     id: number; 
     left: string; 
@@ -15,7 +15,26 @@ const ConfettiEffect = ({ active, count = 100 }: ConfettiProps) => {
     size: number;
     rotation: number;
     shape: 'circle' | 'square' | 'triangle';
+    scrollPos: number;
   }>>([]);
+  
+  const containerRef = useRef<HTMLDivElement>(null);
+  const scrollY = useRef<number>(0);
+  
+  // Handle scroll events
+  useEffect(() => {
+    const handleScroll = () => {
+      scrollY.current = window.scrollY;
+      
+      // Update confetti positions based on scroll
+      if (containerRef.current) {
+        containerRef.current.style.transform = `translateY(${scrollY.current * 0.3}px)`;
+      }
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     if (active) {
@@ -37,7 +56,8 @@ const ConfettiEffect = ({ active, count = 100 }: ConfettiProps) => {
         delay: `${Math.random() * 5}s`,
         size: Math.random() * 10 + 5,
         rotation: Math.random() * 360,
-        shape: shapes[Math.floor(Math.random() * shapes.length)]
+        shape: shapes[Math.floor(Math.random() * shapes.length)],
+        scrollPos: Math.random() * 100
       }));
 
       setConfetti(newConfetti);
@@ -49,7 +69,7 @@ const ConfettiEffect = ({ active, count = 100 }: ConfettiProps) => {
   if (!active) return null;
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-50 overflow-hidden">
+    <div className="fixed inset-0 pointer-events-none z-50 overflow-hidden" ref={containerRef}>
       {confetti.map(item => (
         <div
           key={item.id}
@@ -63,7 +83,7 @@ const ConfettiEffect = ({ active, count = 100 }: ConfettiProps) => {
             borderRadius: item.shape === 'circle' ? '50%' : (item.shape === 'square' ? '0' : ''),
             clipPath: item.shape === 'triangle' ? 'polygon(50% 0%, 0% 100%, 100% 100%)' : 'none',
             transform: `rotate(${item.rotation}deg)`,
-            animation: `confetti-fall ${5 + Math.random() * 5}s linear forwards, confetti-sway ${2 + Math.random() * 3}s ease-in-out infinite alternate`
+            animation: `confetti-fall ${5 + Math.random() * 5}s linear infinite, confetti-sway ${2 + Math.random() * 3}s ease-in-out infinite alternate`
           }}
         />
       ))}
